@@ -30,11 +30,21 @@
 
   Polymer("calendar-picker", {
     onCurrentMonth: true,
+    observe: {
+      selectedDate: 'selectedDateChanged'
+    },
+    instanceTemplate: function(template) {
+      HTMLTemplateElement.decorate(template);
+      return this["super"](arguments);
+    },
     ready: function() {
       this.date = new Date();
       this.currentDay = this.date.getDate();
       this.shownDate = new Date();
-      return this.shownDateChanged();
+      this.shownDateChanged();
+      if (!this.selectedDate) {
+        return this.selectedDate = new Date();
+      }
     },
     adjustDays: function() {
       var days, firstDay, _i, _results;

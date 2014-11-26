@@ -1,40 +1,17 @@
 Polymer "datetime-picker",
-  showCalendar: true
   hidePicker: true
 
   observe: {
-    selectedDate: "selectedDateChanged"
-    hidePicker: "pickerShownOrHidden"
     timeString: 'setFullStr'
     dateString: 'setFullStr'
   }
 
-  pickerShownOrHidden: ->
-    if @hidePicker
-      @removeListeners()
-    else
-      @addListeners()
+  ready: ->
+    @updateTopLeft()
 
-  addListeners: ->
-    @docClickListener = =>
-      if not @clickedLocally
-        @hidePicker = true
-
-      @clickedLocally = false
-
-    @localClickListener = => @clickedLocally = true
-
-    document.addEventListener 'click', @docClickListener
-    @addEventListener 'click', @localClickListener
-
-  removeListeners: ->
-    @removeEventListener 'click', @localClickListener
-    document.removeEventListener 'click', @docClickListener
-
-  selectedDateChanged: ->
-    @selectedMonthName = @$.calendar.getMonthName(@selectedDate)
-    @selectedDay = @selectedDate.getDate()
-    @selectedYear = @selectedDate.getFullYear()
+  updateTopLeft: ->
+    @inputTop = @offsetTop
+    @inputLeft = @offsetLeft
 
   setDateStr: (e, str, sender) -> @dateString = str
 
@@ -52,20 +29,8 @@ Polymer "datetime-picker",
     @fullStr = str
 
   selectInput: ->
-    console.log '@hidePicker'
-    console.log @hidePicker
     if @hidePicker
-      top = @offsetTop
-      left = @offsetLeft
-
-      picker = @$.picker
-
-      num = if bowser.webkit then 55 else 30
-
-      picker.style.top = (top + num) + 'px'
-      picker.style.left = left + 'px'
-
       @hidePicker = false
 
-  toggleShowCalendar: ->
-    @showCalendar = !@showCalendar
+  onHidePicker: ->
+    @hidePicker = true

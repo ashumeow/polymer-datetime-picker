@@ -3,7 +3,7 @@
 <link rel="import" href="../../paper-button/paper-button.html">
 <link rel="import" href="../../paper-ripple/paper-ripple.html">
 
-<polymer-element name="calendar-picker" attributes="selectedDate">
+<polymer-element name="calendar-picker" attributes="selectedDate" on-picker-shown='{{pickerShown}}'>
   <template>
     <link href="calendar-picker.css" rel="stylesheet">
 
@@ -25,17 +25,13 @@
         <th>Sat</th>
       </thead>
       <tbody>
-        <template repeat="{{week,index in weeks}}">
-          <tr>
-            <template repeat="{{day,index in week}}">
-              <td on-tap="{{clickDay}}" day="{{day}}"
-                class="{{day <= 0 ? 'dead-date' : ''}} {{day == selectedDay && shownMonth === selectedMonth ? 'selected' : ''}}
-                {{onCurrentMonth && day < currentDay ? 'dead-date' : '' }} {{onCurrentMonth && day == currentDay ? 'current-day' : ''}}">
-                <span hidden?="{{day <= 0}}">{{day}}</span>
-              </td>
-            </template>
-          </tr>
-        </template>
+        <tr template repeat="{{week in weeks}}">
+          <td template repeat="{{day in week}}">
+            <div on-tap="{{clickDay}}" class="td {{day <= 0 ? 'dead-date' : ''}} {{day == selectedDay && shownMonth === selectedMonth ? 'selected' : ''}} {{onCurrentMonth && day < currentDay ? 'dead-date' : '' }} {{onCurrentMonth && day == currentDay ? 'current-day' : ''}}" day="{{day}}">
+              <span hidden?="{{day <= 0}}">{{day}}</span>
+            </div>
+          </td>
+        </tr>
       </tbody>
     </table>
   </template>

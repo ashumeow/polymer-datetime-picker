@@ -1,4 +1,4 @@
-getAmPm = (hours) -> if hours <= 12 then 'AM' else 'PM'
+getAmPm = (hours) -> if hours < 12 then 'AM' else 'PM'
 
 getHours = (hours) ->
   if hours <= 12
@@ -25,7 +25,7 @@ Polymer "time-picker",
     @hours = @$.hours.immediateValue
 
   ready: ->
-    d = new Date()
+    d = @date or new Date()
 
     @minutes = d.getMinutes()
     @hours = getHours(d.getHours())
@@ -35,6 +35,10 @@ Polymer "time-picker",
     @$.minutes.value = @minutes
 
     @fireNewTimeString()
+
+  attached: ->
+    console.log 'attached'
+    @fire('calendar-shown', false)
 
   fireNewTimeString: ->
     str = "#{@hours}:#{pad(@minutes)} #{@ampm}"
